@@ -1,0 +1,9 @@
+arrow==1.2.3
+httpx==0.23.0
+pandas==1.5.3
+pandas_datareader==0.10.0
+plotly==5.9.0
+polars==0.17.12
+streamlit==1.21.0
+streamlit_autorefresh==0.0.1
+yfinance==0.2.12
