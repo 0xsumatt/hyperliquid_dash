@@ -71,22 +71,26 @@ def fetch_positions(lookup):
         positions_list = []
 
         for position in req:
-            entry_px = position["position"]["entryPx"]
+            try:
+                entry_px = position["position"]["entryPx"]
 
-            if entry_px and entry_px != '0.0':
-                coin = position["position"]["coin"]
-                liquidation_px = position["position"]["liquidationPx"]
-                position_value = position["position"]["positionValue"]
-                unrealized_pnl = position["position"]["unrealizedPnl"]
+                if entry_px and entry_px != '0.0':
+                    coin = position["position"]["coin"]
+                    liquidation_px = position["position"]["liquidationPx"]
+                    position_value = position["position"]["positionValue"]
+                    unrealized_pnl = position["position"]["unrealizedPnl"]
 
-                position_dict = {
-                    "Coin": coin,
-                    "Entry Price": float(entry_px),
-                    "liquidation Price": float(liquidation_px) if liquidation_px and liquidation_px != '0.0' else None,
-                    "Position Value": float(position_value) if position_value and position_value != '0.0' else None,
-                    "Unrealized Pnl": float(unrealized_pnl) if unrealized_pnl and unrealized_pnl != '0.0' else None
-                }
-                positions_list.append(position_dict)
+                    position_dict = {
+                        "Coin": coin,
+                        "Entry Price": float(entry_px),
+                        "liquidation Price": float(liquidation_px) if liquidation_px and liquidation_px != '0.0' else None,
+                        "Position Value": float(position_value) if position_value and position_value != '0.0' else None,
+                        "Unrealized Pnl": float(unrealized_pnl) if unrealized_pnl and unrealized_pnl != '0.0' else None
+                    }
+                    positions_list.append(position_dict)
+
+            except KeyError :
+                st.write("No Positions Found")
 
         df = pd.DataFrame(positions_list).astype({
             "Coin": "string",
