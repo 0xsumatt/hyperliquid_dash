@@ -71,7 +71,7 @@ def fetch_positions(lookup):
         positions_list = []
 
         for position in req:
-            try:
+          
                 entry_px = position["position"]["entryPx"]
 
                 if entry_px and entry_px != '0.0':
@@ -89,19 +89,21 @@ def fetch_positions(lookup):
                     }
                     positions_list.append(position_dict)
 
-            except KeyError :
-                st.write("No Positions Found")
+            
+        try:
+            df = pd.DataFrame(positions_list).astype({
+                "Coin": "string",
+                "Entry Price": "float64",
+                "liquidation Price": "float64",
+                "Position Value": "float64",
+                "Unrealized Pnl": "float64",
+            })
+            client.close()
+            return df
+        except Exception:
+                st.header("No Positions Found")
 
-        df = pd.DataFrame(positions_list).astype({
-            "Coin": "string",
-            "Entry Price": "float64",
-            "liquidation Price": "float64",
-            "Position Value": "float64",
-            "Unrealized Pnl": "float64",
-        })
-
-        client.close()
-        return df
+            
 
 def fetch_open_orders(lookup):
     if len(lookup) != 0:
